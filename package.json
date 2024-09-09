@@ -2,7 +2,7 @@
   "name": "pocketbase-node",
   "main": "index.js",
   "files": [
-    "index.js"
+    "*.js"
   ],
   "version": "0.0.1-2"
 }
