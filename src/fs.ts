@@ -1,3 +1,6 @@
+import type { PathLike, Mode, MakeDirectoryOptions, WriteFileOptions } from 'fs'
+import { writeFileSync as _writeFileSync } from 'fs'
+
 function byteArrayToUtf8(byteArray) {
   let utf8String = ''
   for (let i = 0; i < byteArray.length; i++) {
@@ -6,7 +9,7 @@ function byteArrayToUtf8(byteArray) {
   return decodeURIComponent(escape(utf8String)) // Handle multi-byte characters
 }
 
-const readFileSync = (path, options) => {
+export const readFileSync = (path, options) => {
   const res = $os.readFile(path)
   if (typeof res === 'string') {
     return res
@@ -15,7 +18,7 @@ const readFileSync = (path, options) => {
   return s
 }
 
-const existsSync = (path, fileType = `file`) => {
+export const existsSync = (path, fileType = `file`) => {
   const isDir = (() => {
     try {
       $os.readDir(path)
@@ -42,9 +45,53 @@ const existsSync = (path, fileType = `file`) => {
     : isFile || isDir
 }
 
-const writeFileSync = (path, data) => {
+export const writeFileSync: typeof _writeFileSync = (
+  path,
+  data,
+  options: WriteFileOptions
+) => {
+  if (typeof path !== 'string') {
+    throw new Error('path must be a string')
+  }
+  if (typeof data !== 'string') {
+    throw new Error('data must be a string')
+  }
+  const mode = (() => {
+    if (typeof options === 'object' && 'mode' in options) {
+      return options.mode
+    }
+    return 0o644
+  })()
   // @ts-ignore
-  $os.writeFile(path, data)
+  $os.writeFile(path, data, mode)
 }
 
-export { readFileSync, existsSync, writeFileSync }
+export function mkdirSync(
+  path: PathLike,
+  options: MakeDirectoryOptions & {
+    recursive: true
+  }
+): string | undefined
+export function mkdirSync(
+  path: PathLike,
+  options?:
+    | Mode
+    | (MakeDirectoryOptions & {
+        recursive?: false | undefined
+      })
+    | null
+): void
+export function mkdirSync(
+  path: PathLike,
+  options?: Mode | MakeDirectoryOptions | null
+): string | undefined {
+  const mode = (() => {
+    if (typeof options === 'object' && 'mode' in options) {
+      return options.mode
+    }
+    return 0o755
+  })()
+  // @ts-ignore
+  $os.mkdirAll(path.toString(), mode)
+  return
+}

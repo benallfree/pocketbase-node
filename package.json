@@ -8,10 +8,9 @@
     "watch": "tsup src/index.ts --dts --format cjs --out-dir dist --watch"
   },
   "devDependencies": {
-    "pocodex": "link:pocodex",
+    "@types/node": "^22.5.4",
+    "pocketbase-jsvm": "link:pocketbase-jsvm",
     "tsup": "^8.2.4",
-    "typescript": "^5.6.2",
-    "@types/bun": "latest",
-    "pocketbase-jsvm": "link:pocketbase-jsvm"
+    "typescript": "^5.6.2"
   }
 }
