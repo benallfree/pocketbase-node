@@ -38,8 +38,13 @@ const existsSync = (path, fileType = `file`) => {
   return fileType === 'file'
     ? isFile
     : fileType === 'dir'
-      ? isDir
-      : isFile || isDir
+    ? isDir
+    : isFile || isDir
 }
 
-module.exports = { readFileSync, existsSync }
+const writeFileSync = (path, data) => {
+  // @ts-ignore
+  $os.writeFile(path, data)
+}
+
+export { readFileSync, existsSync, writeFileSync }

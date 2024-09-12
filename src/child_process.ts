@@ -5,11 +5,13 @@
  */
 const execSync = (cmdArr) => {
   // prepare the command to execute
-  const _cmd = $os.cmd(...cmdArr)
+  const [cmd, ...args] = cmdArr
+  const _cmd = $os.cmd(cmd, ...args)
 
   // execute the command and return its standard output as string
-  const output = String.fromCharCode(..._cmd.output())
+  const charOut = _cmd.output() as number[]
+  const output = String.fromCharCode(...charOut)
   return output
 }
 
-module.exports = { execSync }
+export { execSync }
