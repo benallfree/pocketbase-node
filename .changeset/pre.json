@@ -1,0 +1,10 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "pocketbase-node": "0.0.1"
+  },
+  "changesets": [
+    "wicked-elephants-arrive"
+  ]
+}
