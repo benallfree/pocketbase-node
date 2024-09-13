@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
-    "pocketbase-jsvm": "^0.22.20-rev.1",
+    "pocketbase-jsvm": "^0.22.20001",
     "tsup": "^8.2.4",
     "typescript": "^5.6.2"
   }
