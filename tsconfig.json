@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "types": ["pocketbase-jsvm", "@types/node"],
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "strict": true
+  },
+  "include": ["src/**/*.ts"]
 }

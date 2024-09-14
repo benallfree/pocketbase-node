@@ -24,7 +24,7 @@
 
 'use strict'
 
-function assertPath(path) {
+function assertPath(path: string) {
   if (typeof path !== 'string') {
     throw new TypeError(
       'Path must be a string. Received ' + JSON.stringify(path)
@@ -33,7 +33,7 @@ function assertPath(path) {
 }
 
 // Resolves . and .. elements in a path with directory names
-function normalizeStringPosix(path, allowAboveRoot) {
+function normalizeStringPosix(path: string, allowAboveRoot: boolean) {
   var res = ''
   var lastSegmentLength = 0
   var lastSlash = -1
@@ -96,7 +96,16 @@ function normalizeStringPosix(path, allowAboveRoot) {
   return res
 }
 
-function _format(sep, pathObject) {
+function _format(
+  sep: string,
+  pathObject: {
+    dir: string
+    base: string
+    ext: string
+    root: string
+    name: string
+  }
+) {
   var dir = pathObject.dir || pathObject.root
   var base = pathObject.base || (pathObject.name || '') + (pathObject.ext || '')
   if (!dir) {
@@ -149,7 +158,7 @@ function resolve(...args: string[]) {
   }
 }
 
-function normalize(path) {
+function normalize(path: string) {
   assertPath(path)
 
   if (path.length === 0) return '.'
@@ -167,7 +176,7 @@ function normalize(path) {
   return path
 }
 
-function isAbsolute(path) {
+function isAbsolute(path: string) {
   assertPath(path)
   return path.length > 0 && path.charCodeAt(0) === 47 /*/*/
 }
@@ -187,7 +196,7 @@ function join(...paths: string[]) {
   return normalize(joined)
 }
 
-function relative(from, to) {
+function relative(from: string, to: string) {
   assertPath(from)
   assertPath(to)
 
@@ -269,11 +278,11 @@ function relative(from, to) {
   }
 }
 
-function _makeLong(path) {
+function _makeLong(path: string) {
   return path
 }
 
-function dirname(path) {
+function dirname(path: string) {
   assertPath(path)
   if (path.length === 0) return '.'
   var code = path.charCodeAt(0)
@@ -298,7 +307,7 @@ function dirname(path) {
   return path.slice(0, end)
 }
 
-function basename(path, ext) {
+function basename(path: string, ext: string) {
   if (ext !== undefined && typeof ext !== 'string')
     throw new TypeError('"ext" argument must be a string')
   assertPath(path)
@@ -371,7 +380,7 @@ function basename(path, ext) {
   }
 }
 
-function extname(path) {
+function extname(path: string) {
   assertPath(path)
   var startDot = -1
   var startPart = 0
@@ -421,7 +430,7 @@ function extname(path) {
   return path.slice(startDot, end)
 }
 
-function format(pathObject) {
+function format(pathObject: string) {
   if (pathObject === null || typeof pathObject !== 'object') {
     throw new TypeError(
       'The "pathObject" argument must be of type Object. Received type ' +
@@ -431,7 +440,7 @@ function format(pathObject) {
   return _format('/', pathObject)
 }
 
-function parse(path) {
+function parse(path: string) {
   assertPath(path)
 
   var ret = { root: '', dir: '', base: '', ext: '', name: '' }

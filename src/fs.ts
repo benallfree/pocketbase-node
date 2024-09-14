@@ -1,15 +1,18 @@
 import type { PathLike, Mode, MakeDirectoryOptions, WriteFileOptions } from 'fs'
 import { writeFileSync as _writeFileSync } from 'fs'
 
-function byteArrayToUtf8(byteArray) {
+function byteArrayToUtf8(byteArray: number[]) {
   let utf8String = ''
   for (let i = 0; i < byteArray.length; i++) {
-    utf8String += String.fromCharCode(byteArray[i])
+    utf8String += String.fromCharCode(byteArray[i]!)
   }
   return decodeURIComponent(escape(utf8String)) // Handle multi-byte characters
 }
 
-export const readFileSync = (path, options) => {
+export const readFileSync = (path: string, options?: any) => {
+  if (typeof path !== 'string') {
+    throw new Error('path must be a string')
+  }
   const res = $os.readFile(path)
   if (typeof res === 'string') {
     return res
@@ -18,10 +21,13 @@ export const readFileSync = (path, options) => {
   return s
 }
 
-export const existsSync = (path, fileType = `file`) => {
+export const existsSync = (
+  pathLike: string,
+  fileType: 'dir' | 'file' | 'both' = 'both'
+) => {
   const isDir = (() => {
     try {
-      $os.readDir(path)
+      $os.readDir(pathLike)
       return true
     } catch {
       return false
@@ -32,7 +38,7 @@ export const existsSync = (path, fileType = `file`) => {
       return false
     }
     try {
-      return $filesystem.fileFromPath(path) !== null
+      return $filesystem.fileFromPath(pathLike) !== null
     } catch {
       return false
     }
@@ -45,11 +51,7 @@ export const existsSync = (path, fileType = `file`) => {
     : isFile || isDir
 }
 
-export const writeFileSync: typeof _writeFileSync = (
-  path,
-  data,
-  options: WriteFileOptions
-) => {
+export const writeFileSync: typeof _writeFileSync = (path, data, options) => {
   if (typeof path !== 'string') {
     throw new Error('path must be a string')
   }
@@ -57,7 +59,7 @@ export const writeFileSync: typeof _writeFileSync = (
     throw new Error('data must be a string')
   }
   const mode = (() => {
-    if (typeof options === 'object' && 'mode' in options) {
+    if (options && typeof options === 'object' && 'mode' in options) {
       return options.mode
     }
     return 0o644
@@ -86,7 +88,7 @@ export function mkdirSync(
   options?: Mode | MakeDirectoryOptions | null
 ): string | undefined {
   const mode = (() => {
-    if (typeof options === 'object' && 'mode' in options) {
+    if (options && typeof options === 'object' && 'mode' in options) {
       return options.mode
     }
     return 0o755
