@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["pocketbase-jsvm", "@types/node"],
+    "types": ["pocketbase-jsvm"],
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,

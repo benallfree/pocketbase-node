@@ -1,5 +1,13 @@
 # pocketbase-node
 
+## 0.0.4
+
+### Patch Changes
+
+- The published types no longer import from Node's `fs`, so projects that only use `pocketbase-jsvm` types (no `@types/node`) typecheck cleanly
+- Removed the duplicate `process` declaration, which `pocketbase-jsvm` now provides
+- Updated `pocketbase-jsvm` to 0.40.60001
+
 ## 0.0.3
 
 ### Patch Changes

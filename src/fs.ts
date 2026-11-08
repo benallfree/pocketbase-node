@@ -1,5 +1,12 @@
-import type { PathLike, Mode, MakeDirectoryOptions, WriteFileOptions } from 'fs'
-import { writeFileSync as _writeFileSync } from 'fs'
+// Local stand-ins for Node's `fs` types. PocketBase's JSVM has no Node, so the
+// published types must not import from 'fs'.
+export type PathLike = string | { toString(): string }
+export type Mode = number
+export type MakeDirectoryOptions = { recursive?: boolean; mode?: Mode }
+export type WriteFileOptions =
+  | { mode?: Mode; encoding?: string | null; flag?: string }
+  | string
+  | null
 
 function byteArrayToUtf8(byteArray: number[]) {
   let utf8String = ''
@@ -51,7 +58,11 @@ export const existsSync = (
     : isFile || isDir
 }
 
-export const writeFileSync: typeof _writeFileSync = (path, data, options) => {
+export const writeFileSync = (
+  path: string,
+  data: string,
+  options?: WriteFileOptions
+): void => {
   if (typeof path !== 'string') {
     throw new Error('path must be a string')
   }
